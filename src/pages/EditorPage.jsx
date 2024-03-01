@@ -12,7 +12,7 @@ export const EditorPage = () => {
                     <div className='grid grid-cols-2 gap-6  p-6 '>
                         {[1, 2, 3, 4, 5, 3, 3, 1, 1, 1, 1, 1, 1].map((item) => {
                             return (<div>
-                                <div className='mx-auto flex items-center justify-center h-12 w-12 bg-black/75 text-white text-lg border rounded-[50%] '>VP</div>
+                                <div className='mx-auto flex items-center justify-center h-12 w-12 bg-black/75 text-white text-lg border rounded-full '>VP</div>
                                 <div className='w-full text-sm text-center'><p>Vishal Patel</p></div>
                             </div>)
                         })}
