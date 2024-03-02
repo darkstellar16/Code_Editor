@@ -1,6 +1,32 @@
-import React from 'react'
+import React, { useRef, useEffect, useState } from 'react'
+import { CodeEditor } from '../components/CodeEditor'
+import { initSocket } from '../socket';
 
 export const EditorPage = () => {
+    const [clients, setClients] = useState([{
+        socketID: "1",
+        username: "Vishal Patel"
+    }, {
+        socketID: "2",
+        username: "Vishal Yadav"
+    }])
+    const socketRef = useRef(null);
+
+    useEffect(() => {
+        const init = async () => {
+            socketRef.current = await initSocket();
+            socketRef.current.emit("join", {
+                username: "Vishal Patel",
+                socketID: "1"
+            })
+        }
+        init();
+
+
+    }, [])
+
+
+
 
     return (
         <div className='flex flex-row h-screen overflow-hidden'>
@@ -29,7 +55,9 @@ export const EditorPage = () => {
                     >Leave</button>
                 </div>
             </div>
-            <div className='w-full'>second</div>
+            <div className='w-full'>
+                <CodeEditor />
+            </div>
         </div>
     )
 }
