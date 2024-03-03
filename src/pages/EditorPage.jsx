@@ -43,12 +43,28 @@ export const EditorPage = () => {
                     setUsers(clients);
 
                 })
+
+            //Listening the disconnected 
+            socketRef.current.on(ACTIONS.DISCONNETED, ({ socketId, userName }) => {
+                console.log(userName);
+                toast.success(`${userName} left the room`);
+                setUsers((prev) => {
+                    return prev.filter((clients) => clients.socketId !== socketId)
+                })
+
+            })
         }
         init();
+        return () => {
+            socketRef.current.disconnect();
+            socketRef.current.off(ACTIONS.JOINED);
+            socketRef.current.off(ACTIONS.DISCONNETED);
+        }
+
     }, [])
 
 
-    console.log(users);
+    // console.log(users);
 
     return (
         <div className='flex flex-row h-screen overflow-hidden'>
