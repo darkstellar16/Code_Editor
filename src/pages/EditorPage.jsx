@@ -1,32 +1,54 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { CodeEditor } from '../components/CodeEditor'
 import { initSocket } from '../socket';
+import ACTIONS from '../Action';
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
+
 
 export const EditorPage = () => {
-    const [clients, setClients] = useState([{
-        socketID: "1",
-        username: "Vishal Patel"
-    }, {
-        socketID: "2",
-        username: "Vishal Yadav"
-    }])
+    const [users, setUsers] = useState([])
+
+
     const socketRef = useRef(null);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { roomID } = useParams();
+
+    const handleError = (err) => {
+        console.log("scoket error", err);
+        toast.error("Socket connection failed try again later");
+        navigate("/");
+    }
 
     useEffect(() => {
         const init = async () => {
+
             socketRef.current = await initSocket();
-            socketRef.current.emit("join", {
-                username: "Vishal Patel",
-                socketID: "1"
+            socketRef.current.on('connect_error', (err) => handleError(err));
+            socketRef.current.on('connect_failed', (err) => handleError(err));
+
+            socketRef.current.emit(ACTIONS.JOIN, {
+                roomID,
+                userName: location.state?.userName
             })
+
+            //Listening for joined event
+            socketRef.current.on(ACTIONS.JOINED,
+                ({ clients, userName, socketId }) => {
+                    if (userName !== location.state?.userName) {
+                        toast.success(`${userName} joined the room`)
+                    }
+                    // console.log(clients);
+                    setUsers(clients);
+
+                })
         }
         init();
-
-
     }, [])
 
 
-
+    console.log(users);
 
     return (
         <div className='flex flex-row h-screen overflow-hidden'>
