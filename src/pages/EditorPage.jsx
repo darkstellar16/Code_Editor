@@ -4,7 +4,7 @@ import { initSocket } from '../socket';
 import ACTIONS from '../Action';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-
+import copy from 'copy-to-clipboard';
 
 export const EditorPage = () => {
     const [users, setUsers] = useState([])
@@ -46,7 +46,6 @@ export const EditorPage = () => {
 
             //Listening the disconnected 
             socketRef.current.on(ACTIONS.DISCONNETED, ({ socketId, userName }) => {
-                console.log(userName);
                 toast.success(`${userName} left the room`);
                 setUsers((prev) => {
                     return prev.filter((clients) => clients.socketId !== socketId)
@@ -64,7 +63,15 @@ export const EditorPage = () => {
     }, [])
 
 
-    // console.log(users);
+
+    const handleName = (value) => {
+        const res = value.split(" ");
+        const ans = res.map((item) => item[0].toUpperCase());
+        const result = ans.join("");
+        return result;
+    }
+
+
 
     return (
         <div className='flex flex-row h-screen overflow-hidden'>
@@ -74,27 +81,36 @@ export const EditorPage = () => {
                 </div>
                 <div className='overflow-y-auto h-[75%] border border-b-2 mt-2'>
                     <div className='grid grid-cols-2 gap-6  p-6 '>
-                        {[1, 2, 3, 4, 5, 3, 3, 1, 1, 1, 1, 1, 1].map((item) => {
+                        {users && users?.map((item) => {
                             return (<div>
-                                <div className='mx-auto flex items-center justify-center h-12 w-12 bg-black/75 text-white text-lg border rounded-full '>VP</div>
-                                <div className='w-full text-sm text-center'><p>Vishal Patel</p></div>
+                                <div className='mx-auto flex items-center justify-center h-12 w-12 bg-black/75 text-white text-lg border rounded-full '>{handleName(item?.userName)}</div>
+                                <div className='w-full text-sm text-center'><p>{item?.userName}</p></div>
                             </div>)
                         })}
                     </div>
                 </div>
                 <div className='flex justify-evenly  h-[15%] items-center '>
                     <button
+                        onClick={() => {
+                            if (roomID) {
+                                copy(roomID);
+                                toast.success("Room ID Copied");
+                            }
+                        }}
                         type='button'
                         className='w-[45%] text-sm p-2 rounded-md  text-white bg-blue-600 '
                     >Copy room ID</button>
                     <button
+                        onClick={() => {
+                            navigate("/");
+                        }}
                         type='button'
                         className='w-[45%] text-sm p-2 rounded-md text-white bg-red-600 '
                     >Leave</button>
                 </div>
             </div>
             <div className='w-full'>
-                <CodeEditor />
+                <CodeEditor socketRef={socketRef} roomID={roomID} />
             </div>
         </div>
     )

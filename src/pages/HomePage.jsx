@@ -50,7 +50,7 @@ export const HomePage = () => {
         <div className='flex flex-col gap-4 justify-center items-center  h-screen bg-black text-white'>
             <span className='text-4xl font-serif'>CODE SYNC</span>
             <div className=' border border-solid  rounded-lg border-red-700  flex flex-col shadow-lg shadow-gray-800 h-[60%]'>
-                <div className='grid  grid-cols-2 p-4'>
+                {/* <div className='grid  grid-cols-2 p-4'>
                     <div className='grid  grid-cols-3 '>
                         <div className='h-16'>
                             <p>Code Sync</p>
@@ -60,7 +60,7 @@ export const HomePage = () => {
                     </div>
                     <div>
                     </div>
-                </div>
+                </div> */}
                 <div className='flex flex-col justify-evenly p-4 h-full'>
                     <div className='flex flex-col text-start '>
                         <span>
