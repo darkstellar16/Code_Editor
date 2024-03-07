@@ -7,13 +7,8 @@
 
 //         }
 
-
-
 //         init();
 //     }, [])
-
-
-
 
 //     return (
 //         <textarea></textarea>

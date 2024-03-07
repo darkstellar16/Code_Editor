@@ -56,7 +56,7 @@ export const HomePage = () => {
                             <p>Code Sync</p>
                         </div>
                         <div></div>
-                        <div>third</div>``
+                        <div>third</div>
                     </div>
                     <div>
                     </div>

@@ -56,9 +56,9 @@ export const EditorPage = () => {
         }
         init();
         return () => {
-            socketRef.current.disconnect();
-            socketRef.current.off(ACTIONS.JOINED);
-            socketRef.current.off(ACTIONS.DISCONNETED);
+            socketRef?.current?.off(ACTIONS.JOINED);
+            socketRef?.current?.off(ACTIONS.DISCONNETED);
+            socketRef?.current?.disconnect();
         }
 
     }, [])
